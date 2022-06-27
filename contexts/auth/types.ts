@@ -8,7 +8,7 @@ export type useAuthProviderType = {
     username: string;
     password: string;
   }) => Promise<User | void>;
-
+  logout: () => void,
   isAuthenticationLoading: boolean;
   isAuthenticated: boolean;
 };

@@ -1,5 +1,4 @@
-import { Header } from "../components/header";
-
+import { Header } from "../components/Login/Header";
 
 export default function Home() {
   return (

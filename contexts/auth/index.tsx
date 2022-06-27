@@ -24,13 +24,18 @@ export const AuthProvider = (props) => {
     });
 
     if (users.length) {
-      const [user] = users;
       setIsAuthenticated(true);
-      localStorage.setItem('@housefy:user', JSON.stringify(user));
-      return user;
+      localStorage.setItem('@housefy:user', JSON.stringify(users[0]));
+      return users[0];
     }
 
     throw new Error('User not found');
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('@housefy:user');
+    router.push('/');
   };
 
   useEffect(() => {
@@ -41,12 +46,11 @@ export const AuthProvider = (props) => {
     }
 
     if (!user && router.pathname !== '/') router.push('/');
-
   }, [isAuthenticated]);
 
   return (
     <AuthContext.Provider
-      value={{ authenticate, isAuthenticated, isAuthenticationLoading }}
+      value={{ authenticate, logout, isAuthenticated, isAuthenticationLoading }}
     >
       {props.children}
     </AuthContext.Provider>

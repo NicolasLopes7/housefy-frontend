@@ -1,6 +1,6 @@
-import { Flex, FormErrorMessage, Input, Text } from '@chakra-ui/react';
-import { useAuthProvider } from '../contexts/auth';
-import useForm from '../hooks/useForm';
+import { Flex, Input, Text } from '@chakra-ui/react';
+import { useAuthProvider } from '../../contexts/auth';
+import useForm from '../../hooks/useForm';
 import {
   Button,
   ButtonGroup,
