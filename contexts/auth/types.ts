@@ -11,4 +11,8 @@ export type useAuthProviderType = {
   logout: () => void,
   isAuthenticationLoading: boolean;
   isAuthenticated: boolean;
+
+  user: User;
+  refetchUser: () => {}
+  isUserLoading: boolean;
 };
