@@ -1,21 +1,24 @@
 import { useQuery } from '@apollo/client';
-import { Button, Flex, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  Skeleton,
+  Stack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { useAuthProvider } from '@contexts/auth';
+import { useTransactionsProvider } from '@contexts/transactions';
 import {
   GET_TRANSACTIONS_BY_USER_ID,
   GetTransactionsByUserId,
 } from 'graphql/transactions/get-transactions-by-user-id-query';
+import { AddTransactionModal } from './AddTransactionModal';
 import { Transaction } from './Transaction';
 
 export const TransactionsList = () => {
-  const { user } = useAuthProvider();
-  const { data: { transactions } = {}, loading } =
-    useQuery<GetTransactionsByUserId>(GET_TRANSACTIONS_BY_USER_ID, {
-      skip: !user,
-      variables: {
-        id: user?.id,
-      },
-    });
+  const { onOpen, ...disclosure } = useDisclosure();
+  const { transactions, isLoading } = useTransactionsProvider();
 
   return (
     <Flex
@@ -28,17 +31,18 @@ export const TransactionsList = () => {
     >
       <Flex alignItems="center" justifyContent="space-between">
         <Heading size="lg">Transactions</Heading>
-        <Button rounded="lg" colorScheme="gray">
+        <Button rounded="lg" colorScheme="gray" onClick={onOpen}>
           Add One
         </Button>
       </Flex>
       <Stack style={{ overflowY: 'auto' }}>
         {transactions?.map((transaction) => (
-          <Skeleton isLoaded={!loading} key={transaction.id}>
+          <Skeleton isLoaded={!isLoading} key={transaction.id}>
             <Transaction transaction={transaction} />
           </Skeleton>
         ))}
       </Stack>
+      <AddTransactionModal disclosure={disclosure} />
     </Flex>
   );
 };

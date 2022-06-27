@@ -9,11 +9,14 @@ type UseForm<T = any> = [
   }
 ];
 
-const useForm = <T = any>(defaultState: any = {}, dependencies: any[] = []): UseForm<T> => {
+const useForm = <T = any,>(
+  defaultState: any = {},
+  dependencies: any[] = []
+): UseForm<T> => {
   const [formState, setFormState] = useState<any>(defaultState);
 
   const handleFormChange = (name) => (e) => {
-    setFormState({ ...formState, [name]: e?.target?.value ?? formState[name] });
+    setFormState({ ...formState, [name]: e?.target?.value ?? e });
   };
 
   useEffect(() => {
