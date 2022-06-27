@@ -1,4 +1,4 @@
-import { Container, Flex, Grid, GridItem } from '@chakra-ui/react';
+import { Container, Grid, GridItem } from '@chakra-ui/react';
 import { Header } from '@components/Dashboard/Header';
 import { TransactionsList } from '@components/Dashboard/TransactionsList';
 
