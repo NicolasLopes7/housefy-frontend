@@ -8,11 +8,11 @@ export type useAuthProviderType = {
     username: string;
     password: string;
   }) => Promise<User | void>;
-  logout: () => void,
+  logout: () => void;
   isAuthenticationLoading: boolean;
   isAuthenticated: boolean;
 
   user: User;
-  refetchUser: () => {}
+  refetchUser: () => {};
   isUserLoading: boolean;
 };

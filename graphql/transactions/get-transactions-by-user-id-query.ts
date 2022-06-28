@@ -10,7 +10,7 @@ export const GET_TRANSACTIONS_BY_USER_ID = gql`
   query GetTransactionsByUserId($id: Int!) {
     transactions(
       where: {
-        assignees: { every: { userId: { equals: $id } } }
+        assignees: { some: { userId: { equals: $id } } }
         status: { notIn: [${TransactionStatus.Cancelled}, ${TransactionStatus.Paid}] }
       }
       orderBy: { dueDate: asc }

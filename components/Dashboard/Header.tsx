@@ -11,7 +11,6 @@ import {
   MenuList,
   Skeleton,
 } from '@chakra-ui/react';
-import { Maybe } from '@components/common/Maybe';
 import { useAuthProvider } from '@contexts/auth';
 
 export const Header = () => {
@@ -23,7 +22,7 @@ export const Header = () => {
       alignItems="center"
       justifyContent="space-between"
     >
-      <Heading size="md">Housefy</Heading>
+      <Heading size="md">Housefy.</Heading>
 
       <Skeleton isLoaded={!isUserLoading && !!user}>
         <Box>

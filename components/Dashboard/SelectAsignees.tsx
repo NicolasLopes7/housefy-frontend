@@ -1,22 +1,24 @@
 import { useQuery } from '@apollo/client';
-import { Avatar, HStack } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Flex, HStack } from '@chakra-ui/react';
 import { useAuthProvider } from '@contexts/auth';
 import { GetUsersQuery, GET_USERS } from 'graphql/user/get-users-query';
 import { useEffect, useMemo, useState } from 'react';
 
 type SelectedUser = { userId: number };
-export const SelectAssignees = ({ onChange }) => {
+export const SelectAssignees = ({ cleanup, onChange }) => {
   const { user } = useAuthProvider();
   const { data: { users } = {} } = useQuery<GetUsersQuery>(GET_USERS);
   const [selectedUsers, setSelectedUsers] = useState<SelectedUser[]>([]);
 
   useEffect(() => {
+    if (!selectedUsers.length && user) handleAddUser({ userId: user?.id });
     onChange(selectedUsers);
   }, [selectedUsers]);
 
   useEffect(() => {
-    handleAddUser({ userId: user?.id });
-  }, [user]);
+    if (cleanup) setSelectedUsers([]);
+  }, [cleanup]);
 
   const handleAddUser = (user: SelectedUser) => {
     setSelectedUsers((prev) => [...prev, user]);
@@ -46,9 +48,8 @@ export const SelectAssignees = ({ onChange }) => {
   return (
     <HStack gap={2}>
       {enrichedUsers?.map((user) => (
-        <>
+        <Box key={user.id}>
           <Avatar
-            key={user.id}
             name={user.username}
             size="sm"
             _hover={{
@@ -60,7 +61,21 @@ export const SelectAssignees = ({ onChange }) => {
             cursor="pointer"
             onClick={() => handleClick(user.id)}
           />
-        </>
+          {user.isSelected && (
+            <Flex
+              alignItems="center"
+              justifyContent="center"
+              position="absolute"
+              height="12px"
+              width="12px"
+              bg="green"
+              rounded="lg"
+              bottom="0"
+            >
+              <CheckIcon h="8px" w="8px" color="white" />
+            </Flex>
+          )}
+        </Box>
       ))}
     </HStack>
   );

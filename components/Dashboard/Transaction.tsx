@@ -1,15 +1,25 @@
-import { QuestionIcon } from '@chakra-ui/icons';
-import { Flex, Heading, IconButton, Skeleton, Text } from '@chakra-ui/react';
+import {
+  Checkbox,
+  Flex,
+  Heading,
+  Skeleton,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { useTransactionsProvider } from '@contexts/transactions';
 import { Transaction as TransactionType } from '@generated/generated-types.d';
 import { PropsWithChildren } from 'react';
+import { TransactionDetailsModal } from './TransactionDetailsModal';
 
 type TransactionProps = PropsWithChildren<{
   transaction: TransactionType;
 }>;
 
 export const Transaction = ({ transaction }: TransactionProps) => {
+  const { completeTransaction } = useTransactionsProvider();
+  const { onOpen, ...disclosure } = useDisclosure();
   return (
-    <Skeleton isLoaded={!!transaction} rounded="lg">
+    <Skeleton isLoaded={!!transaction} rounded="lg" onClick={onOpen}>
       <Flex
         padding={5}
         bg={'gray.100'}
@@ -20,9 +30,12 @@ export const Transaction = ({ transaction }: TransactionProps) => {
         _hover={{ bg: 'gray.200' }}
       >
         <Flex alignItems="center" gap={4}>
-          <IconButton aria-label="Button" colorScheme="yellow">
-            <QuestionIcon />
-          </IconButton>
+          <Checkbox
+            size="lg"
+            borderColor="gray.300"
+            borderRadius="lg"
+            onChange={() => completeTransaction(transaction)}
+          />
           <Flex flexDirection="column" gap={2}>
             <Heading size="sm">{transaction?.name}</Heading>
             <Text size="xs">{transaction?.description}</Text>
@@ -33,6 +46,12 @@ export const Transaction = ({ transaction }: TransactionProps) => {
           <Text size="xs">10:00 AM</Text>
         </Flex>
       </Flex>
+      {disclosure.isOpen && (
+        <TransactionDetailsModal
+          disclosure={disclosure}
+          transaction={transaction}
+        />
+      )}
     </Skeleton>
   );
 };

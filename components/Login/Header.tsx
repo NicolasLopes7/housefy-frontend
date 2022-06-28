@@ -6,7 +6,7 @@ export const Header = () => {
 
   return (
     <Flex minWidth="max-content" alignItems="center" padding={50}>
-      <Heading size="md">Housefy</Heading>
+      <Heading size="md">Housefy.</Heading>
 
       <Spacer />
 

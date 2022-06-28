@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import {
   Button,
   Flex,
@@ -7,12 +6,8 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useAuthProvider } from '@contexts/auth';
 import { useTransactionsProvider } from '@contexts/transactions';
-import {
-  GET_TRANSACTIONS_BY_USER_ID,
-  GetTransactionsByUserId,
-} from 'graphql/transactions/get-transactions-by-user-id-query';
+
 import { AddTransactionModal } from './AddTransactionModal';
 import { Transaction } from './Transaction';
 
@@ -30,18 +25,25 @@ export const TransactionsList = () => {
       h="800px"
     >
       <Flex alignItems="center" justifyContent="space-between">
-        <Heading size="lg">Transactions</Heading>
+        <Heading size="lg">Pending Transactions</Heading>
         <Button rounded="lg" colorScheme="gray" onClick={onOpen}>
           Add One
         </Button>
       </Flex>
-      <Stack style={{ overflowY: 'auto' }}>
-        {transactions?.map((transaction) => (
-          <Skeleton isLoaded={!isLoading} key={transaction.id}>
-            <Transaction transaction={transaction} />
-          </Skeleton>
-        ))}
-      </Stack>
+      {!transactions?.length ? (
+        <Heading size="md" opacity="0.6">
+          There{`'`}s No Pending Transactions :{`)`}
+        </Heading>
+      ) : (
+        <Stack style={{ overflowY: 'auto' }}>
+          {transactions?.map((transaction) => (
+            <Skeleton isLoaded={!isLoading} key={transaction.id}>
+              <Transaction transaction={transaction} />
+            </Skeleton>
+          ))}
+        </Stack>
+      )}
+
       <AddTransactionModal disclosure={disclosure} />
     </Flex>
   );

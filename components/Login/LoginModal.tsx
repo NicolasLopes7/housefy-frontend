@@ -25,7 +25,6 @@ export const LoginModal = ({ disclosure: { isOpen, onClose } }) => {
   const handleSubmit = async () => {
     try {
       setError('');
-      console.log('ta por ca');
       await authenticate(formState);
     } catch (error) {
       setError('User not found');

@@ -10,7 +10,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import {
   TransactionStatus,
   TransactionType,
@@ -33,7 +33,9 @@ const DEFAULT_STATE = {
 export const AddTransactionModal = ({ disclosure: { isOpen, onClose } }) => {
   const initialRef = useRef(null);
   const finalRef = useRef(null);
-  const [{ formState }, { handleFormChange }] = useForm(DEFAULT_STATE);
+  const [{ formState }, { handleFormChange, setFormState }] =
+    useForm(DEFAULT_STATE);
+  const [shouldCleanup, setCleanup] = useState(false)
   const [createTransaction] = useMutation(CREATE_TRANSACTION);
   const { refetchTransactions } = useTransactionsProvider();
 
@@ -54,6 +56,8 @@ export const AddTransactionModal = ({ disclosure: { isOpen, onClose } }) => {
       },
     });
     refetchTransactions();
+    setFormState(DEFAULT_STATE);
+    setCleanup(true);
     onClose();
   };
 
@@ -125,7 +129,7 @@ export const AddTransactionModal = ({ disclosure: { isOpen, onClose } }) => {
 
           <FormControl mt={4}>
             <FormLabel>Assignees</FormLabel>
-            <SelectAssignees onChange={handleFormChange('assignees')} />
+            <SelectAssignees onChange={handleFormChange('assignees')} cleanup={shouldCleanup}/>
           </FormControl>
         </ModalBody>
 
